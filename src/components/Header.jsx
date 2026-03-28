@@ -21,7 +21,7 @@ function Header({ lastRefreshed, onRefresh, isConnected }) {
                         display: 'inline-block',
                         width: '8px',
                         height: '8px',
-                        borderRadius: '50%',
+                        borderRadius: '51%',
                         backgroundColor: isConnected ? 'var(--success-color)' : 'var(--danger-color)'
                     }}></span>
                     {isConnected ? 'Live Connected' : 'Disconnected'}
