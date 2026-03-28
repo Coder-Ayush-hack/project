@@ -1,21 +1,57 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Header from './Header';
 import '../index.css';
 
-function Layout() {
-    const [lastRefreshed, setLastRefreshed] = useState(new Date());
-    const [isConnected, setIsConnected] = useState(true);
+// ─── sessionStorage helpers ──────────────────────────────────────────────────
+// sessionStorage is scoped to the browser tab and is wiped when the tab closes.
+// We use it to track per-session activity (login time, page visits, refreshes).
 
-    // Expose a top level refresh manual trigger
+function ssGetNumber(key, fallback = 0) {
+    const v = sessionStorage.getItem(key);
+    return v !== null ? parseInt(v, 10) : fallback;
+}
+
+function ssIncrement(key) {
+    const next = ssGetNumber(key) + 1;
+    sessionStorage.setItem(key, String(next));
+    return next;
+}
+
+function ssGetSessionStart() {
+    const iso = sessionStorage.getItem('pulse_session_start');
+    return iso ? new Date(iso) : new Date();
+}
+
+function Layout() {
+    const [lastRefreshed, setLastRefreshed]   = useState(new Date());
+    const [isConnected,   setIsConnected]     = useState(true);
+    const [pageVisits,    setPageVisits]      = useState(() => ssGetNumber('pulse_page_visits'));
+    const [refreshCount,  setRefreshCount]    = useState(() => ssGetNumber('pulse_refresh_count'));
+    const [sessionStart]  = useState(ssGetSessionStart); // read-once
+
+    const location = useLocation();
+
+    // Increment page visit counter in sessionStorage whenever the route changes
+    useEffect(() => {
+        const updated = ssIncrement('pulse_page_visits');
+        setPageVisits(updated);
+    }, [location.pathname]);
+
+    // Manual refresh: update time, simulate reconnect, track in sessionStorage
     const handleRefresh = useCallback(() => {
-        setLastRefreshed(new Date());
-        // Simulate re-connecting
+        const now = new Date();
+        setLastRefreshed(now);
+        // Persist last refresh time in sessionStorage
+        sessionStorage.setItem('pulse_last_refresh', now.toISOString());
+
+        const updated = ssIncrement('pulse_refresh_count');
+        setRefreshCount(updated);
+
+        // Simulate reconnect
         setIsConnected(false);
-        setTimeout(() => {
-            setIsConnected(true);
-        }, 500);
+        setTimeout(() => setIsConnected(true), 500);
     }, []);
 
     return (
@@ -26,9 +62,11 @@ function Layout() {
                     lastRefreshed={lastRefreshed}
                     onRefresh={handleRefresh}
                     isConnected={isConnected}
+                    sessionStart={sessionStart}
+                    pageVisits={pageVisits}
+                    refreshCount={refreshCount}
                 />
                 <div className="content-area">
-                    {/* We pass lastRefreshed to Outlet context so children can re-fetch or reset if needed */}
                     <Outlet context={{ lastRefreshed, isConnected }} />
                 </div>
             </main>

@@ -28,7 +28,7 @@ function UserActivity() {
         { name: 'Sneha Ranjan', page: '/home', time: '12 min ago', device: 'Desktop' },
         { name: 'Vikram Jaiswal', page: '/blog', time: '17 min ago', device: 'Mobile' },
         { name: 'Ananya Tiwari', page: '/docs', time: '21 min ago', device: 'Desktop' },
-        { name: 'Karan Prasad', page: '/home', time: '26 min ago', device: 'Desktop' },
+        { name: 'Omm Amrit Das', page: '/home', time: '26 min ago', device: 'Desktop' },
     ];
 
     const topCountries = [

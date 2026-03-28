@@ -807,6 +807,40 @@ button:focus-visible {
 }
 
 /* ══════════════════════════════════════
+   SESSION STATS BAR (sessionStorage data)
+══════════════════════════════════════ */
+.session-stats {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-color);
+  border-radius: 999px;
+  padding: 0.3rem 0.85rem;
+  white-space: nowrap;
+}
+
+.session-stat {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: var(--text-secondary);
+}
+
+.session-stat strong {
+  color: var(--text-primary);
+  font-weight: 700;
+}
+
+.session-stat-divider {
+  color: var(--border-color);
+  font-size: 0.85rem;
+  user-select: none;
+}
+
+/* ══════════════════════════════════════
    LOGIN PAGE
 ══════════════════════════════════════ */
 .login-page {
@@ -1108,3 +1142,158 @@ button:focus-visible {
   opacity: 0.8;
 }
 
+/* ══════════════════════════════════════
+   404 NOT FOUND PAGE
+══════════════════════════════════════ */
+.not-found-container {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--bg-color);
+  overflow: hidden;
+}
+
+.not-found-card {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 3rem 3.5rem;
+  background: rgba(30, 41, 59, 0.75);
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  backdrop-filter: blur(16px);
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.45);
+  max-width: 480px;
+  width: 90%;
+  animation: fadeSlideUp 0.5s ease both;
+}
+
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.not-found-glitch {
+  font-size: 7rem;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  background: linear-gradient(135deg, #3b82f6, #7c3aed);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  position: relative;
+  animation: glitch 3s infinite;
+}
+
+.not-found-glitch::before,
+.not-found-glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  background: linear-gradient(135deg, #3b82f6, #7c3aed);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.not-found-glitch::before {
+  animation: glitchTop 3s infinite;
+  clip-path: polygon(0 0, 100% 0, 100% 33%, 0 33%);
+  transform: translateX(-3px);
+}
+
+.not-found-glitch::after {
+  animation: glitchBottom 3s infinite;
+  clip-path: polygon(0 66%, 100% 66%, 100% 100%, 0 100%);
+  transform: translateX(3px);
+}
+
+@keyframes glitch {
+  0%, 90%, 100% { filter: none; }
+  92% { filter: hue-rotate(60deg); }
+  94% { filter: hue-rotate(-60deg); }
+}
+
+@keyframes glitchTop {
+  0%, 90%, 100% { transform: translateX(0); opacity: 0; }
+  91% { transform: translateX(-4px); opacity: 0.8; }
+  93% { transform: translateX(4px); opacity: 0.8; }
+}
+
+@keyframes glitchBottom {
+  0%, 90%, 100% { transform: translateX(0); opacity: 0; }
+  92% { transform: translateX(4px); opacity: 0.8; }
+  94% { transform: translateX(-4px); opacity: 0.8; }
+}
+
+.not-found-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0.75rem 0 0.5rem;
+}
+
+.not-found-message {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+.not-found-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 0.75rem 1.75rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
+}
+
+.not-found-btn:hover {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 22px rgba(59, 130, 246, 0.55);
+}
+
+.not-found-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.18;
+  animation: orbFloat 8s ease-in-out infinite alternate;
+  z-index: 1;
+}
+
+.orb-1 {
+  width: 380px;
+  height: 380px;
+  background: #3b82f6;
+  top: -100px;
+  left: -120px;
+}
+
+.orb-2 {
+  width: 320px;
+  height: 320px;
+  background: #7c3aed;
+  bottom: -80px;
+  right: -80px;
+  animation-delay: -4s;
+}
+
+@keyframes orbFloat {
+  from { transform: scale(1) translateY(0); }
+  to   { transform: scale(1.12) translateY(20px); }
+}
