@@ -5,7 +5,7 @@ import '../index.css';
 
 const USER_PROFILES = {
     user: {
-        name: 'Ayush Sharma',
+        name: 'Ayush Kumar',
         email: 'ayush@pulseanalytics.io',
         avatar: '👤',
         department: 'Viewer',
